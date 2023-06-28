@@ -1,20 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from "react";
+import { SafeAreaView, Switch } from "react-native";
+import Board from "./components/Board";
+import { ThemeContext, main } from "./constants/Styles";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	const [theme, setTheme] = useState("light");
+	return (
+		<ThemeContext.Provider value={theme}>
+			<SafeAreaView style={theme === "light" ? main.container : [main.container, { backgroundColor: "black" }]}>
+				<Switch
+					value={theme === "dark"}
+					onValueChange={() => setTheme(theme === "light" ? "dark" : "light")}
+					trackColor={{ true: "#4B5EFC" }}
+				/>
+				<Board />
+			</SafeAreaView>
+			<StatusBar style={theme === "dark" ? "light" : "dark"} />
+		</ThemeContext.Provider>
+	);
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
